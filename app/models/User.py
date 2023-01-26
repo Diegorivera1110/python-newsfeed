@@ -16,3 +16,9 @@ class User(Base):
         assert '@' in email
 
         return email 
+
+    @validates('password')
+    def validate_password(self, key, password):
+        assert len(password) > 4
+
+        return password
