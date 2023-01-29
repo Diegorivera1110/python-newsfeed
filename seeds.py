@@ -1,6 +1,6 @@
-from app.models import User
+from app.models import User, Post
 from app.db import Session, Base, engine
-from app.models import User, Post 
+
 
 # drop and rebuild tables
 Base.metadata.drop_all(engine)
@@ -27,5 +27,7 @@ db.add_all([
     Post(title='Nunc purus', post_url='http://desdev.cn/enim/blandit/mi.jpg', user_id=3),
     Post(title='Pellentesque eget nunc', post_url='http://google.ca/nam/nulla/integer.aspx', user_id=4)
 ])
+
+db.commit()
 
 db.close()
