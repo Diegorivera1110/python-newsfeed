@@ -9,9 +9,17 @@ bp = Blueprint('home', __name__, url_prefix='/')
 def index():
     # get all posts
     db = get_db()
-    posts = db.query(Post).order_by(Post.created_at.desc()).all()
+    posts = (
+        db
+            .query(Post)
+            .order_by(Post.created_at.desc())
+            .all()
+            )
 
-    return render_template('homepage.html')
+    return render_template(
+        'homepage.html',
+        posts=posts
+        )
 
 
 @bp.route('/login')
