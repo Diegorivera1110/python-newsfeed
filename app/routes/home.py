@@ -28,4 +28,12 @@ def login():
 
 @bp.route('/post/<id>')
 def single(id):
-    return render_template('single-post.html')
+    # get sinlge post by id
+    db = get_db()
+    post = db.query(Post).filter(Post.id == id).one()
+
+    # render sinle post template 
+    return render_template(
+        'single-post.html',
+        post=post
+        )
