@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from app.models import User
 from app.db import get_db
 
@@ -20,4 +20,4 @@ def signup():
     db.add(newUser)
     db.commit
 
-    return ''
+    return jsonify(id = newUser.id)
