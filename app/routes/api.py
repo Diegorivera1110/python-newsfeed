@@ -1,3 +1,5 @@
+import sys
+
 from flask import Blueprint, request, jsonify
 from app.models import User
 from app.db import get_db
@@ -25,6 +27,7 @@ def signup():
 
     except:
     # insert failed, so send error to front end
-        return jsonify(message='Signup failed'), 500
+        print(sys.exe_info()[0])
+        return jsonify(message = 'Signup failed'), 500
 
-    return jsonify(id=newUser.id)
+    return jsonify(id = newUser.id)
