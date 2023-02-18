@@ -18,7 +18,8 @@ def index():
 
     return render_template(
         'homepage.html',
-        posts=posts
+        posts=posts,
+        loggedIn=session.get('loggedIn')
         )
 
 
@@ -35,5 +36,6 @@ def single(id):
     # render sinle post template 
     return render_template(
         'single-post.html',
-        post=post
+        post=post,
+        loggedIn=session.get('loggedIn')
         )
