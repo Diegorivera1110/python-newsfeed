@@ -89,4 +89,7 @@ def comment():
     
     return jsonify(id = newComment.id)
 
-    
+@bp.route('/posts/upvote', methods=['PUT'])
+def upvote():
+    data = request.get_json()
+    db = get_db()
