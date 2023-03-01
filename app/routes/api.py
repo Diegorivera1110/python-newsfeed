@@ -110,3 +110,10 @@ def upvote():
         return jsonify(message = 'Upvote failed'), 500
     
     return '', 204
+
+@bp.route('/posts', method=['POST'])
+def create():
+    data = request.get_json()
+    db = get_db()
+
+    try:
