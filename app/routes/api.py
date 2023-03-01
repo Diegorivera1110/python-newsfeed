@@ -38,11 +38,13 @@ def signup():
     
     return jsonify(id = newUser.id)
 
+
 @bp.route('/users/logout', methods=['POST'])
 def logout():
     # remove session variables
     session.clear()
     return '', 204
+
 
 @bp.route('/users/login', methods=['POST'])
 def login():
@@ -65,6 +67,7 @@ def login():
     session['loggedIn'] = True
     
     return jsonify(id = user.id)
+
 
 @bp.route('/comments', methods=['POST'])
 def comment():
@@ -89,6 +92,7 @@ def comment():
     
     return jsonify(id = newComment.id)
 
+
 @bp.route('/posts/upvote', methods=['PUT'])
 def upvote():
     data = request.get_json()
@@ -110,6 +114,7 @@ def upvote():
         return jsonify(message = 'Upvote failed'), 500
     
     return '', 204
+
 
 @bp.route('/posts', method=['POST'])
 def create():
@@ -133,3 +138,10 @@ def create():
         return jsonify(message = 'Post failed'), 500
     
     return jsonify(id = newPost.id)
+
+
+@bp.route('/posts/<id>', methods=['PUT'])
+def update(id):
+    data = request.get_json()
+    db = get_db()
+
