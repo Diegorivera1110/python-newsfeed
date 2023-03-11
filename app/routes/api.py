@@ -16,28 +16,27 @@ def signup():
     try:
         # create new user
         newUser = User(
-            username = data['username'],
-            email = data['email'],
-            password = data['password']
+            username=data['username'],
+            email=data['email'],
+            password=data['password']
         )
 
     # save in database
         db.add(newUser)
         db.commit
 
-
     except:
-    # insert failed, so send error to front end
+        # insert failed, so send error to front end
         print(sys.exe_info()[0])
 
         db.rollback()
-        return jsonify(message = 'Signup failed'), 500
+        return jsonify(message='Signup failed'), 500
 
     session.clear()
     session['user_id'] = newUser.id
     session['loggedIn'] = True
-    
-    return jsonify(id = newUser.id)
+
+    return jsonify(id=newUser.id)
 
 
 @bp.route('/users/logout', methods=['POST'])
@@ -52,22 +51,22 @@ def login():
     data = request.get_json()
     db = get_db()
 
-    try: 
-     user = db.query(User).filter(User.email == data['email']).one()
-    except: 
+    try:
+        user = db.query(User).filter(User.email == data['email']).one()
+    except:
         print(sys.exc_info()[0])
 
-        return jsonify(message = 'Incorrect credentials'), 400
+        return jsonify(message='Incorrect credentials'), 400
 
     if user.verify_password(data['password']) == False:
 
-        return jsonify(message = 'Incorrect credentials'), 400
-    
+        return jsonify(message='Incorrect credentials'), 400
+
     session.clear()
     session['user_id'] = user.id
     session['loggedIn'] = True
-    
-    return jsonify(id = user.id)
+
+    return jsonify(id=user.id)
 
 
 @bp.route('/comments', methods=['POST'])
@@ -76,12 +75,12 @@ def comment():
     data = request.get_json()
     db = get_db()
 
-    try: 
+    try:
         # create a new comment
         newComment = Comment(
-            comment_text = data['comment_text'],
-            post_id = data['post_id'],
-            user_id = session.get('user_id')
+            comment_text=data['comment_text'],
+            post_id=data['post_id'],
+            user_id=session.get('user_id')
         )
 
         db.add(newComment)
@@ -90,9 +89,9 @@ def comment():
         print(sys.exc_info()[0])
 
         db.rollback()
-        return jsonify(message = 'Comment failed'), 500
-    
-    return jsonify(id = newComment.id)
+        return jsonify(message='Comment failed'), 500
+
+    return jsonify(id=newComment.id)
 
 
 @bp.route('/posts/upvote', methods=['PUT'])
@@ -101,11 +100,11 @@ def upvote():
     data = request.get_json()
     db = get_db()
 
-    try: 
+    try:
         # create a new vote with incoming id and session id
         newVote = Vote(
-            post_id = data['post_id'],
-            user_id = session.get('user_id')
+            post_id=data['post_id'],
+            user_id=session.get('user_id')
         )
 
         db.add(newVote)
@@ -114,8 +113,8 @@ def upvote():
         print(sys.exc_info()[0])
 
         db.rollback()
-        return jsonify(message = 'Upvote failed'), 500
-    
+        return jsonify(message='Upvote failed'), 500
+
     return '', 204
 
 
@@ -128,20 +127,20 @@ def create():
     try:
         # create a new post
         newPost = Post(
-            title = data['title'],
-            post_url = data['post_url'],
-            user_id = session.get('user_id')
+            title=data['title'],
+            post_url=data['post_url'],
+            user_id=session.get('user_id')
         )
 
         db.add(newPost)
         db.commit()
-    except: 
+    except:
         print(sys.exc_info()[0])
 
         db.rollback()
-        return jsonify(message = 'Post failed'), 500
-    
-    return jsonify(id = newPost.id)
+        return jsonify(message='Post failed'), 500
+
+    return jsonify(id=newPost.id)
 
 
 @bp.route('/posts/<id>', methods=['PUT'])
@@ -150,25 +149,26 @@ def update(id):
     data = request.get_json()
     db = get_db()
 
-    try: 
+    try:
         # retrieve post and update title property
-      post = db.query(Post).filter(Post.id == id).one()
-      post.title = data['title']
-      db.commit()
+        post = db.query(Post).filter(Post.id == id).one()
+        post.title = data['title']
+        db.commit()
     except:
         print(sys.exc_info()[0])
 
         db.rollback()
-        return jsonify(message = 'Post not found'), 404
-    
+        return jsonify(message='Post not found'), 404
+
     return '', 204
+
 
 @bp.route('/posts/<id>', methods=['DELETE'])
 @login_required
 def delete(id):
     db = get_db()
 
-    try: 
+    try:
         # delete post from db
         db.delete(db.query(Post).filter(Post.id == id).one())
         db.commit()
@@ -176,6 +176,6 @@ def delete(id):
         print(sys.exc_info()[0])
 
         db.rollback()
-        return jsonify(message = 'Post not found'), 404
-    
+        return jsonify(message='Post not found'), 404
+
     return '', 204

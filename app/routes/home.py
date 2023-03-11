@@ -11,25 +11,26 @@ def index():
     db = get_db()
     posts = (
         db
-            .query(Post)
-            .order_by(Post.created_at.desc())
-            .all()
-            )
+        .query(Post)
+        .order_by(Post.created_at.desc())
+        .all()
+    )
 
     return render_template(
         'homepage.html',
         posts=posts,
         loggedIn=session.get('loggedIn')
-        )
+    )
 
 
 @bp.route('/login')
 def login():
-    # not logged in yet 
+    # not logged in yet
     if session.get('loggedIn') is None:
-     return render_template('login.html')
-    
+        return render_template('login.html')
+
     return redirect('/dashboard')
+
 
 @bp.route('/post/<id>')
 def single(id):
@@ -37,9 +38,9 @@ def single(id):
     db = get_db()
     post = db.query(Post).filter(Post.id == id).one()
 
-    # render sinle post template 
+    # render sinle post template
     return render_template(
         'single-post.html',
         post=post,
         loggedIn=session.get('loggedIn')
-        )
+    )

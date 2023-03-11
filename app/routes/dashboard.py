@@ -5,6 +5,7 @@ from app.utils.auth import login_required
 
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
 
+
 @bp.route('/')
 @login_required
 def dash():
@@ -21,7 +22,8 @@ def dash():
         'dashboard.html',
         posts=posts,
         loggedIn=session.get('loggedIn')
-        )
+    )
+
 
 @bp.route('/edit/<id>')
 @login_required
@@ -33,6 +35,6 @@ def edit(id):
     # render edit page
     return render_template(
         'edit-post.html',
-        post=post, 
+        post=post,
         loggedIn=session.get('loggedIn')
-        )
+    )
